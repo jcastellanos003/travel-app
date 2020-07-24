@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../resources/provider.dart';
-
 class Map extends StatelessWidget {
   static final route = 'map';
 
@@ -17,8 +15,6 @@ class Map extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = AppProvider.of(context);
-
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: _kGooglePlex,

@@ -18,9 +18,9 @@ class TravelApp extends StatelessWidget {
               primarySwatch: Colors.amber,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            initialRoute: Register.route,
+            initialRoute: Login.route,
             routes: {
-          Register.route: (BuildContext context) => Register(),
+          Login.route: (BuildContext context) => Login(),
           Home.route: (BuildContext context) => Home(),
           Map.route: (BuildContext context) => Map(),
         }));

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:travel_planner/models/user.dart';
 
 import '../resources/resources.dart';
 import '../blocs/blocs.dart';
 
-class Register extends StatelessWidget {
-  static final route = 'register';
+class Login extends StatelessWidget {
+  static final route = 'login';
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class Register extends StatelessWidget {
               SizedBox(height: 30),
               _createPassword(bloc),
               SizedBox(height: 30),
-              _createButton(bloc)
+              _createButton(bloc),
             ]),
           ),
           SizedBox(
@@ -68,7 +69,7 @@ class Register extends StatelessWidget {
     );
   }
 
-  Widget _createEmail(RegisterBloc bloc) {
+  Widget _createEmail(LoginBloc bloc) {
     return StreamBuilder(
       stream: bloc.emailStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -88,7 +89,7 @@ class Register extends StatelessWidget {
     );
   }
 
-  Widget _createPassword(RegisterBloc bloc) {
+  Widget _createPassword(LoginBloc bloc) {
     return StreamBuilder(
       stream: bloc.pwdStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -107,9 +108,9 @@ class Register extends StatelessWidget {
     );
   }
 
-  Widget _createButton(RegisterBloc bloc) {
+  Widget _createButton(LoginBloc bloc) {
     return StreamBuilder(
-      stream: bloc.registerStream,
+      stream: bloc.canActivate,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return RaisedButton(
           child: Container(
@@ -119,13 +120,27 @@ class Register extends StatelessWidget {
           elevation: 0,
           color: Colors.deepPurple,
           textColor: Colors.white,
-          onPressed: snapshot.hasData ? () => _navigate(context) : null,
+          onPressed:
+              snapshot.hasData ? () => _signUpAndNavigate(context, bloc) : null,
         );
       },
     );
   }
 
-  _navigate(BuildContext context) {
-    Navigator.pushReplacementNamed(context, 'home');
+  Widget _createLoading(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.loadingStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {
+    await bloc.loginUser();
+
+    if (bloc.userValue.email != null) {
+      Navigator.pushReplacementNamed(context, 'home');
+    }
   }
 }
