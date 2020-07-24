@@ -20,14 +20,14 @@ class Spot {
 
   factory Spot.fromJson(Map<String, dynamic> data) {
     return Spot(
-        id: data[0]['_id'],
-        location: data[0]['location'],
-        title: data[0]['title'],
-        description: data[0]['description'],
-        address: data[0]['address'],
-        photo: data[0]['photo'],
-        isActive: data[0]['isActive'],
-        created: data[0]['created']);
+        id: data['_id'],
+        location: data['location'],
+        title: data['title'],
+        description: data['description'],
+        address: data['address'],
+        photo: data['photo'],
+        isActive: data['isActive'],
+        created: data['created']);
   }
 
   @override

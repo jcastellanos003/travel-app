@@ -19,12 +19,10 @@ class AuthProvider {
             jsonEncode(<String, String>{'email': email, 'password': password}));
 
     if (response.statusCode == 200) {
-      print(response.statusCode);
       return User.fromJson(json.decode(response.body));
     }
 
     if (response.statusCode == 401) {
-      print(response.statusCode);
       return User();
     }
 

@@ -30,9 +30,22 @@ class Map extends StatelessWidget {
           mapType: MapType.normal,
           initialCameraPosition: _kGooglePlex,
           onMapCreated: (GoogleMapController controller) {
+            bloc.loadSpots();
             _controller.complete(controller);
           },
-          markers: snapshot.data,
+          markers: new List.from(snapshot.data)
+              .map((spot) => Marker(
+                    markerId: MarkerId(spot.id),
+                    position: LatLng(
+                      spot.location[0] as double,
+                      spot.location[1] as double,
+                    ),
+                    infoWindow: InfoWindow(
+                      title: spot.title,
+                      snippet: spot.address,
+                    ),
+                  ))
+              .toSet(),
         );
       },
     );

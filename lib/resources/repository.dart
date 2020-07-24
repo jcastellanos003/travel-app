@@ -12,5 +12,5 @@ class Repository {
   Future<User> loginUser(String email, String password) =>
       authProvider.loginUser(email, password);
 
-  Future<Spot> getSpots() => spotProvider.getSpots();
+  Future<List> getSpots() => spotProvider.getSpots();
 }

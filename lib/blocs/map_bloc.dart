@@ -9,7 +9,7 @@ class MapBloc with FieldValidators {
   final _repository = Repository();
 
   // subjects
-  final _spots$ = BehaviorSubject<Spot>();
+  final _spots$ = BehaviorSubject<List>.seeded([]);
   final _loading$ = BehaviorSubject<bool>.seeded(false);
 
   // state
@@ -17,7 +17,7 @@ class MapBloc with FieldValidators {
   get loading => _loading$.value;
 
   // streams
-  Stream<Spot> get spotsStream => _spots$.stream;
+  Stream<List> get spotsStream => _spots$.stream;
   Stream<bool> get loadingStream => _loading$.stream;
 
   loadSpots() async {
