@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../resources/provider.dart';
 
 class Home extends StatelessWidget {
+  static final route = 'home';
+
   @override
   Widget build(BuildContext context) {
-    final bloc = AppProvider.login(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Travel Planner'),
