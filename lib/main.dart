@@ -21,7 +21,8 @@ class TravelApp extends StatelessWidget {
             initialRoute: Register.route,
             routes: {
           Register.route: (BuildContext context) => Register(),
-          Home.route: (BuildContext context) => Home()
+          Home.route: (BuildContext context) => Home(),
+          Map.route: (BuildContext context) => Map(),
         }));
   }
 }
