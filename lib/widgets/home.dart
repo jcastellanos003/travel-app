@@ -16,7 +16,7 @@ class Home extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('Gracias por registrarte mi perro: ${bloc.userState.email}')
+          Text('Gracias por registrarte mi perra: ${bloc.userValue}')
         ],
       ),
     );
