@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travel_planner/models/user.dart';
 
-import '../resources/resources.dart';
-import '../blocs/blocs.dart';
+import 'package:travel_planner/blocs/login_bloc.dart';
+import 'package:travel_planner/resources/provider.dart';
 
 class Login extends StatelessWidget {
   static final route = 'login';
@@ -27,7 +26,7 @@ class Login extends StatelessWidget {
   }
 
   Widget _createForm(BuildContext context) {
-    final bloc = AppProvider.of(context);
+    final loginBloc = AppProvider.login(context);
     final size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
@@ -54,11 +53,11 @@ class Login extends StatelessWidget {
             child: Column(children: [
               Text('Registro', style: TextStyle(fontSize: 20)),
               SizedBox(height: 60),
-              _createEmail(bloc),
+              _createEmail(loginBloc),
               SizedBox(height: 30),
-              _createPassword(bloc),
+              _createPassword(loginBloc),
               SizedBox(height: 30),
-              _createButton(bloc),
+              _createButton(loginBloc),
             ]),
           ),
           SizedBox(

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import '../resources/provider.dart';
 
 class Home extends StatelessWidget {
-  static final route = 'home';
-
   @override
   Widget build(BuildContext context) {
-    final bloc = AppProvider.of(context);
+    final bloc = AppProvider.login(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -16,13 +14,13 @@ class Home extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('Gracias por registrarte mi perro: ${bloc.userValue.email}'),
+          Text('Gracias por registrarte mi perra'),
           Center(
             child: RaisedButton(
               child: Text('Map screen'),
               onPressed: () {
                 // Navigate to the map screen when tapped.
-                Navigator.pushNamed(context, '/map');
+                Navigator.pushNamed(context, 'map');
               },
             ),
           ),

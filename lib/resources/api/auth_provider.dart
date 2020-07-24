@@ -6,7 +6,6 @@ import 'package:travel_planner/models/models.dart';
 
 class AuthProvider {
   final Client client = Client();
-  final _baseUrl = 'https://chargingspotsapi.herokuapp.com/';
 
   Future<User> loginUser(String email, String password) async {
     Response response;

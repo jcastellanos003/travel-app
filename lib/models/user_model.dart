@@ -7,10 +7,12 @@ class User {
   User({this.id, this.name, this.email, this.avatar});
 
   factory User.fromJson(Map<String, dynamic> json) {
+    dynamic raw = json['user'];
+
     return User(
-        id: json['user._id'],
-        name: json['user.name'],
-        email: json['user.email'],
-        avatar: json['user.avatar']);
+        id: raw['_id'],
+        name: raw['name'],
+        email: raw['email'],
+        avatar: raw['avatar']);
   }
 }

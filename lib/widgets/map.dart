@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:travel_planner/blocs/map_bloc.dart';
+import 'package:travel_planner/resources/provider.dart';
+
 class Map extends StatelessWidget {
   static final route = 'map';
 
@@ -15,11 +18,22 @@ class Map extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      mapType: MapType.normal,
-      initialCameraPosition: _kGooglePlex,
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
+    final bloc = AppProvider.map(context);
+    return _createMap(bloc);
+  }
+
+  Widget _createMap(MapBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.spotsStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: _kGooglePlex,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          markers: snapshot.data,
+        );
       },
     );
   }

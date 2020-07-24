@@ -10,13 +10,18 @@ class AppProvider extends InheritedWidget {
   }
 
   final loginBloc = LoginBloc();
+  final mapBloc = MapBloc();
 
   AppProvider._({Key key, Widget child}) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
 
-  static LoginBloc of(BuildContext context) {
+  static LoginBloc login(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppProvider>().loginBloc;
+  }
+
+  static MapBloc map(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<AppProvider>().mapBloc;
   }
 }
