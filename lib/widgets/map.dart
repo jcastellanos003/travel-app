@@ -33,19 +33,21 @@ class Map extends StatelessWidget {
             bloc.loadSpots();
             _controller.complete(controller);
           },
-          markers: new List.from(snapshot.data)
-              .map((spot) => Marker(
-                    markerId: MarkerId(spot.id),
-                    position: LatLng(
-                      spot.location[0] as double,
-                      spot.location[1] as double,
-                    ),
-                    infoWindow: InfoWindow(
-                      title: spot.title,
-                      snippet: spot.address,
-                    ),
-                  ))
-              .toSet(),
+          markers: snapshot.hasData
+              ? new List.from(snapshot.data)
+                  .map<Marker>((spot) => Marker(
+                        markerId: MarkerId(spot.id),
+                        position: LatLng(
+                          spot.location[0] as double,
+                          spot.location[1] as double,
+                        ),
+                        infoWindow: InfoWindow(
+                          title: spot.title,
+                          snippet: spot.address,
+                        ),
+                      ))
+                  .toSet()
+              : null,
         );
       },
     );
