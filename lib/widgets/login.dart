@@ -51,13 +51,13 @@ class Login extends StatelessWidget {
                   ),
                 ]),
             child: Column(children: [
-              Text('Registro', style: TextStyle(fontSize: 20)),
+              Text('Iniciar sesión', style: TextStyle(fontSize: 20)),
               SizedBox(height: 60),
               _createEmail(loginBloc),
               SizedBox(height: 30),
               _createPassword(loginBloc),
               SizedBox(height: 30),
-              _createButton(loginBloc),
+              _createButton(loginBloc)
             ]),
           ),
           SizedBox(
@@ -114,7 +114,7 @@ class Login extends StatelessWidget {
         return RaisedButton(
           child: Container(
               padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-              child: Text('Registrarse')),
+              child: Text('Ingresar')),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           elevation: 0,
           color: Colors.deepPurple,
@@ -126,16 +126,15 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _createLoading(LoginBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.loadingStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Center(child: CircularProgressIndicator());
-      },
-    );
-  }
-
   _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+
     await bloc.loginUser();
 
     if (bloc.userValue.email != null) {
