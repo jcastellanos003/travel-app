@@ -1,4 +1,6 @@
-class User {
+import 'package:travel_planner/resources/core/core.dart';
+
+class User implements JSONEntity {
   final String id;
   final String name;
   final String email;
@@ -14,5 +16,16 @@ class User {
         name: raw['name'],
         email: raw['email'],
         avatar: raw['avatar']);
+  }
+
+  Map<String, dynamic> toJSONEncodable() {
+    Map<String, dynamic> encodedObject = new Map();
+
+    encodedObject['id'] = id;
+    encodedObject['name'] = name;
+    encodedObject['email'] = email;
+    encodedObject['avatar'] = avatar;
+
+    return encodedObject;
   }
 }
