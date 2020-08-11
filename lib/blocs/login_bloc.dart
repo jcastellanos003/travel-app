@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:travel_planner/models/models.dart';
+import 'package:travel_planner/resources/core/core.dart';
 import 'package:travel_planner/resources/repository.dart';
 import 'package:travel_planner/utils/utils.dart';
 
@@ -33,10 +34,15 @@ class LoginBloc with FieldValidators {
   Function(String) get passwordChanged => _password$.sink.add;
 
   loginUser() async {
-    _loading$.sink.add(true);
+    User user = await _repository.loginUser(emailValue, passwordValue);
 
-    _loginUser$.sink
-        .add(await _repository.loginUser(emailValue, passwordValue));
+    // set store
+    StorageProvider.store.setJSONEntity('user', user);
+
+    print(StorageProvider.store.getJSONEntity('user'));
+
+    _loading$.sink.add(true);
+    _loginUser$.sink.add(user);
   }
 
   dispose() {

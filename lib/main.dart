@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './resources/provider.dart';
-import './widgets/widgets.dart';
+import './pages/pages.dart';
 
 void main() {
   runApp(TravelApp());
@@ -21,7 +21,8 @@ class TravelApp extends StatelessWidget {
             initialRoute: Login.route,
             routes: {
           Login.route: (BuildContext context) => Login(),
-          Home.route: (BuildContext context) => Home()
+          Home.route: (BuildContext context) => Home(),
+          Map.route: (BuildContext context) => Map(),
         }));
   }
 }
