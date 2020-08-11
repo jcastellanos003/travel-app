@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './resources/provider.dart';
-import './widgets/widgets.dart';
+import './pages/pages.dart';
 
 void main() {
   runApp(TravelApp());
