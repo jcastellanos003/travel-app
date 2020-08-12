@@ -10,6 +10,7 @@ class AppProvider extends InheritedWidget {
   }
 
   final loginBloc = LoginBloc();
+  final registrationBloc = RegistrationBloc();
   final mapBloc = MapBloc();
 
   AppProvider._({Key key, Widget child}) : super(key: key, child: child);
@@ -19,6 +20,12 @@ class AppProvider extends InheritedWidget {
 
   static LoginBloc login(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppProvider>().loginBloc;
+  }
+
+  static RegistrationBloc registration(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<AppProvider>()
+        .registrationBloc;
   }
 
   static MapBloc map(BuildContext context) {

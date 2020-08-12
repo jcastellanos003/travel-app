@@ -23,6 +23,7 @@ class TravelApp extends StatelessWidget {
           Login.route: (BuildContext context) => Login(),
           Home.route: (BuildContext context) => Home(),
           Map.route: (BuildContext context) => Map(),
+          Registration.route: (BuildContext context) => Registration()
         }));
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:travel_planner/blocs/login_bloc.dart';
+import 'package:travel_planner/blocs/registration_bloc.dart';
 import 'package:travel_planner/resources/provider.dart';
 
-class Login extends StatelessWidget {
-  static final route = 'login';
+class Registration extends StatelessWidget {
+  static final route = 'registration';
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class Login extends StatelessWidget {
   }
 
   Widget _createForm(BuildContext context) {
-    final loginBloc = AppProvider.login(context);
+    final registrationBloc = AppProvider.registration(context);
     final size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
@@ -51,26 +51,13 @@ class Login extends StatelessWidget {
                   ),
                 ]),
             child: Column(children: [
-              Text('Iniciar sesión', style: TextStyle(fontSize: 20)),
+              Text('Registrarse', style: TextStyle(fontSize: 20)),
               SizedBox(height: 60),
-              _createEmail(loginBloc),
+              _createName(registrationBloc),
               SizedBox(height: 30),
-              _createPassword(loginBloc),
+              _createEmail(registrationBloc),
               SizedBox(height: 30),
-              _createLoginButton(loginBloc),
-              SizedBox(height: 30),
-              RaisedButton(
-                  child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                      child: Text('Register')),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                  elevation: 0,
-                  color: Colors.deepPurple,
-                  textColor: Colors.white,
-                  onPressed: () =>
-                      Navigator.pushReplacementNamed(context, 'registration'))
+              _createButton(registrationBloc)
             ]),
           ),
           SizedBox(
@@ -81,7 +68,27 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _createEmail(LoginBloc bloc) {
+  Widget _createName(RegistrationBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.nameStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: TextField(
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                errorText: snapshot.error,
+                icon: Icon(Icons.text_fields, color: Colors.deepPurple),
+                hintText: 'My name',
+                labelText: 'Name'),
+            onChanged: bloc.nameChanged,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _createEmail(RegistrationBloc bloc) {
     return StreamBuilder(
       stream: bloc.emailStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -101,26 +108,7 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _createPassword(LoginBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.pwdStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: TextField(
-            obscureText: true,
-            decoration: InputDecoration(
-                errorText: snapshot.error,
-                icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
-                labelText: 'Password'),
-            onChanged: bloc.passwordChanged,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _createLoginButton(LoginBloc bloc) {
+  Widget _createButton(RegistrationBloc bloc) {
     return StreamBuilder(
       stream: bloc.canActivate,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -139,23 +127,7 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _createRegistrationButton(BuildContext context) {
-    return RaisedButton(
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-            child: Text('Ingresar')),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        elevation: 0,
-        color: Colors.deepPurple,
-        textColor: Colors.white,
-        onPressed: () => _navigate(context));
-  }
-
-  _navigate(BuildContext context) {
-    Navigator.pushReplacementNamed(context, 'registration');
-  }
-
-  _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {
+  _signUpAndNavigate(BuildContext context, RegistrationBloc bloc) async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -164,10 +136,10 @@ class Login extends StatelessWidget {
           );
         });
 
-    await bloc.loginUser();
+    await bloc.registerUser();
 
-    if (bloc.userValue.email != null) {
+    /*  if (bloc.userValue.email != null) {
       Navigator.pushReplacementNamed(context, 'home');
-    }
+    } */
   }
 }
