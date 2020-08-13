@@ -63,7 +63,7 @@ class Login extends StatelessWidget {
                   child: Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                      child: Text('Register')),
+                      child: Text('Registrarme')),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
                   elevation: 0,
@@ -112,7 +112,7 @@ class Login extends StatelessWidget {
             decoration: InputDecoration(
                 errorText: snapshot.error,
                 icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
-                labelText: 'Password'),
+                labelText: 'Contraseña'),
             onChanged: bloc.passwordChanged,
           ),
         );
@@ -137,22 +137,6 @@ class Login extends StatelessWidget {
         );
       },
     );
-  }
-
-  Widget _createRegistrationButton(BuildContext context) {
-    return RaisedButton(
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-            child: Text('Ingresar')),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        elevation: 0,
-        color: Colors.deepPurple,
-        textColor: Colors.white,
-        onPressed: () => _navigate(context));
-  }
-
-  _navigate(BuildContext context) {
-    Navigator.pushReplacementNamed(context, 'registration');
   }
 
   _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {

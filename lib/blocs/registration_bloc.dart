@@ -35,19 +35,9 @@ class RegistrationBloc with FieldValidators {
   Function(String) get emailChanged => _email$.sink.add;
 
   registerUser() async {
-    print('registering $nameValue');
-    /* User user = await _repository.loginUser(emailValue, passwordValue);
-
-    // set store
-    StorageProvider.store.setJSONEntity('user', user);
-
-    print(StorageProvider.store.getJSONEntity('user'));
-
-    _loading$.sink.add(true);
-    _loginUser$.sink.add(user); */
-
     dynamic emailMessage =
         await _repository.registerUser(nameValue, emailValue);
+
     print('registering $emailMessage');
   }
 

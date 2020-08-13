@@ -1,9 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' show Client, Response;
+import 'package:http_interceptor/http_interceptor.dart';
+import 'interceptors.dart';
 
 class UserProvider {
-  final Client client = Client();
+  //final Client client = Client();
+
+  Client client = HttpClientWithInterceptor.build(interceptors: [
+    GeneralInterceptor(),
+  ]);
 
   Future<dynamic> registerUser(String name, String email) async {
     Response response;
