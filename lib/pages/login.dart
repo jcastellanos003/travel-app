@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:travel_planner/blocs/login_bloc.dart';
 import 'package:travel_planner/resources/provider.dart';
+import 'package:travel_planner/widgets/forms/email.dart';
 
 class Login extends StatelessWidget {
   static final route = 'login';
@@ -53,7 +54,7 @@ class Login extends StatelessWidget {
             child: Column(children: [
               Text('Iniciar sesión', style: TextStyle(fontSize: 20)),
               SizedBox(height: 60),
-              _createEmail(loginBloc),
+              EmailInputStream(),
               SizedBox(height: 30),
               _createPassword(loginBloc),
               SizedBox(height: 30),
@@ -78,26 +79,6 @@ class Login extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-
-  Widget _createEmail(LoginBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.emailStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-                errorText: snapshot.error,
-                icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
-                hintText: 'nombre@correo.com',
-                labelText: 'Correo Electrónico'),
-            onChanged: bloc.emailChanged,
-          ),
-        );
-      },
     );
   }
 
