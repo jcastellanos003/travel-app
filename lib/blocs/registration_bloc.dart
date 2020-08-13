@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
-
-import 'package:travel_planner/models/models.dart';
-import 'package:travel_planner/resources/core/core.dart';
 import 'package:travel_planner/resources/repository.dart';
 import 'package:travel_planner/utils/utils.dart';
 
@@ -12,13 +9,11 @@ class RegistrationBloc with FieldValidators {
   // subjects
   final _name$ = BehaviorSubject<String>();
   final _email$ = BehaviorSubject<String>();
-  final _loginUser$ = BehaviorSubject<User>();
-  final _loading$ = BehaviorSubject<bool>.seeded(false);
+  final _loading$ = BehaviorSubject<bool>.seeded(true);
 
   // state
   get nameValue => _name$.value;
   get emailValue => _email$.value;
-  get userValue => _loginUser$.value;
   get loading => _loading$.value;
 
   // streams
@@ -27,7 +22,6 @@ class RegistrationBloc with FieldValidators {
 
   Stream<bool> get canActivate =>
       Rx.combineLatest2(nameStream, emailStream, (u, e) => true);
-  Stream<User> get loginUserStream => _loginUser$.stream;
   Stream<bool> get loadingStream => _loading$.stream;
 
   // handlers
@@ -35,16 +29,14 @@ class RegistrationBloc with FieldValidators {
   Function(String) get emailChanged => _email$.sink.add;
 
   registerUser() async {
-    dynamic emailMessage =
-        await _repository.registerUser(nameValue, emailValue);
-
-    print('registering $emailMessage');
+    _loading$.sink.add(true);
+    await _repository.registerUser(nameValue, emailValue);
+    _loading$.sink.add(false);
   }
 
   dispose() {
     _name$?.close();
     _email$?.close();
-    _loginUser$?.close();
     _loading$?.close();
   }
 }

@@ -128,18 +128,36 @@ class Registration extends StatelessWidget {
   }
 
   _signUpAndNavigate(BuildContext context, RegistrationBloc bloc) async {
-    showDialog(
+    /* showDialog(
         context: context,
         builder: (BuildContext context) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        });
+        }); */
 
     await bloc.registerUser();
 
     /*  if (bloc.userValue.email != null) {
-      Navigator.pushReplacementNamed(context, 'home');
-    } */
+      Navigator.pushReplacementNamed(context, 'code');
+    } 
+    
+
+
+    ValueNotifier<bool> loading = ValueNotifier(bloc.loading);
+    print(loading);
+
+    ValueListenableBuilder(
+      builder: (BuildContext context, bool value, Widget child) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+      valueListenable: loading,
+      child: Text('expensive child'),
+    );
+
+    
+    */
   }
 }
