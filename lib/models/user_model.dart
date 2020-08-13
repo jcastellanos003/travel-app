@@ -1,4 +1,4 @@
-import 'package:travel_planner/resources/core/core.dart';
+import 'package:travel_planner/core/core.dart';
 
 class User implements JSONEntity {
   final String id;

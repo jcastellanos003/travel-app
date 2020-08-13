@@ -1,5 +1,6 @@
 import 'package:localstorage/localstorage.dart';
-import 'package:travel_planner/resources/core/core.dart';
+
+import 'package:travel_planner/core/core.dart';
 
 class StorageProvider {
   final String preferencesKey = 'charging_spots';
