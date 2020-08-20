@@ -1,4 +1,5 @@
 import 'package:travel_planner/resources/state/forms/email_state.dart';
+import 'package:travel_planner/resources/state/forms/password_state.dart';
 
 class StateProvider {
   StateProvider._();
@@ -11,5 +12,9 @@ class StateProvider {
 
   static EmailStream getEmailStreamInstance() {
     return EmailStream();
+  }
+
+  static PasswordStream getPasswordStreamInstance() {
+    return PasswordStream();
   }
 }

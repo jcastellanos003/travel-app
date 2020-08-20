@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
-
 import 'package:travel_planner/blocs/login_bloc.dart';
 import 'package:travel_planner/resources/provider.dart';
-import 'package:travel_planner/widgets/forms/email.dart';
+import 'package:travel_planner/widgets/widgets.dart';
 
 class Login extends StatelessWidget {
   static final route = 'login';
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    final loginBloc = AppProvider.login(context);
+    Widget main = Stack(children: <Widget>[
+      _createBG(context),
+      _createForm(context, loginBloc)
+    ]);
+
     return Scaffold(
-      body: Stack(children: <Widget>[_createBG(context), _createForm(context)]),
-    );
+        key: _scaffoldKey,
+        body: StreamBuilder(
+          stream: loginBloc.errorStream,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => _showMessage(snapshot.data));
+              return main;
+            }
+            return main;
+          },
+        ));
   }
 
   Widget _createBG(BuildContext context) {
@@ -26,8 +42,7 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _createForm(BuildContext context) {
-    final loginBloc = AppProvider.login(context);
+  Widget _createForm(BuildContext context, LoginBloc loginBloc) {
     final size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
@@ -56,7 +71,7 @@ class Login extends StatelessWidget {
               SizedBox(height: 60),
               EmailInputStream(),
               SizedBox(height: 30),
-              _createPassword(loginBloc),
+              PasswordInputStream(),
               SizedBox(height: 30),
               _createLoginButton(loginBloc),
               SizedBox(height: 30),
@@ -82,7 +97,7 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _createPassword(LoginBloc bloc) {
+  /* Widget _createPassword(LoginBloc bloc) {
     return StreamBuilder(
       stream: bloc.pwdStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -99,7 +114,7 @@ class Login extends StatelessWidget {
         );
       },
     );
-  }
+  } */
 
   Widget _createLoginButton(LoginBloc bloc) {
     return StreamBuilder(
@@ -120,7 +135,15 @@ class Login extends StatelessWidget {
     );
   }
 
-  _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {
+  _showMessage(String message) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+  }
+
+  _showLoading(
+    BuildContext context,
+  ) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -128,7 +151,9 @@ class Login extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         });
+  }
 
+  _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {
     await bloc.loginUser();
 
     if (bloc.userValue.email != null) {

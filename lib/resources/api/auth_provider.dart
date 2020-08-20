@@ -7,7 +7,7 @@ import 'package:travel_planner/models/models.dart';
 class AuthProvider {
   final Client client = Client();
 
-  Future<User> loginUser(String email, String password) async {
+  Future<Map> loginUser(String email, String password) async {
     Response response;
 
     response = await client.post(
@@ -19,12 +19,12 @@ class AuthProvider {
             jsonEncode(<String, String>{'email': email, 'password': password}));
 
     if (response.statusCode == 200) {
-      return User.fromJson(json.decode(response.body));
+      return json.decode(response.body);
     }
 
-    if (response.statusCode == 401) {
+    /*  if (response.statusCode == 401) {
       return User();
-    }
+    } */
 
     throw Exception('Error al iniciar sesión');
   }

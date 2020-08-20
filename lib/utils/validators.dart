@@ -3,9 +3,9 @@ import 'dart:async';
 class FieldValidators {
   final textValidation = StreamTransformer<String, String>.fromHandlers(
       handleData: (name, sink) => {
-            name.length >= 4
+            name.length >= 1
                 ? sink.add(name)
-                : sink.addError('El nombre debe tener minimo 4 caracteres')
+                : sink.addError('El nombre debe tener minimo 1 caracteres')
           });
 
   final email =

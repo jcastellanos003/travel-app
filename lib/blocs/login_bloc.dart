@@ -10,41 +10,53 @@ import 'package:travel_planner/utils/utils.dart';
 class LoginBloc with FieldValidators {
   final _repository = Repository();
   final emailState = StateProvider.getEmailStreamInstance();
+  final passwordState = StateProvider.getPasswordStreamInstance();
 
   // subjects
-  final _password$ = BehaviorSubject<String>();
   final _loginUser$ = BehaviorSubject<User>();
   final _loading$ = BehaviorSubject<bool>.seeded(false);
+  // ignore: close_sinks
+  final _error$ = BehaviorSubject<String>.seeded(null);
 
   // state
-  get passwordValue => _password$.value;
   get userValue => _loginUser$.value;
   get loading => _loading$.value;
+  get error$ => _error$.value;
 
   // streams
-  Stream<String> get pwdStream => _password$.stream.transform(password);
-  Stream<bool> get canActivate =>
-      Rx.combineLatest2(emailState.stream, pwdStream, (e, p) => true);
+  Stream<bool> get canActivate => Rx.combineLatest2(
+      emailState.stream, passwordState.stream, (e, p) => true);
   Stream<User> get loginUserStream => _loginUser$.stream;
   Stream<bool> get loadingStream => _loading$.stream;
-
-  // handlers
-  Function(String) get passwordChanged => _password$.sink.add;
+  Stream<String> get errorStream => _error$.stream;
 
   loginUser() async {
-    User user = await _repository.loginUser(emailState.value, passwordValue);
-
-    // set store
-    StorageProvider.store.setJSONEntity('user', user);
-
-    print(StorageProvider.store.getJSONEntity('user'));
-
     _loading$.sink.add(true);
-    _loginUser$.sink.add(user);
+    try {
+      Map response =
+          await _repository.loginUser(emailState.value, passwordState.value);
+
+      if (response['status'] == false) {
+        _error$.sink.add(response['message']);
+      } else {
+        User user = User.fromJson(response);
+
+        // set store
+        StorageProvider.store.setJSONEntity('user', user);
+
+        print(StorageProvider.store.getJSONEntity('user'));
+
+        _loginUser$.sink.add(user);
+      }
+      _loading$.sink.add(false);
+    } catch (e) {
+      print(e.message);
+      _error$.sink.add(e.message);
+    }
   }
 
   dispose() {
-    _password$?.close();
+    _error$?.close();
     _loginUser$?.close();
     _loading$?.close();
   }

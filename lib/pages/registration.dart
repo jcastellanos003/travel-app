@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:travel_planner/blocs/registration_bloc.dart';
 import 'package:travel_planner/resources/provider.dart';
+import 'package:travel_planner/widgets/widgets.dart';
 
 class Registration extends StatelessWidget {
   static final route = 'registration';
@@ -55,7 +55,7 @@ class Registration extends StatelessWidget {
               SizedBox(height: 60),
               _createName(registrationBloc),
               SizedBox(height: 30),
-              _createEmail(registrationBloc),
+              EmailInputStream(),
               SizedBox(height: 30),
               _createButton(registrationBloc)
             ]),
@@ -88,26 +88,6 @@ class Registration extends StatelessWidget {
     );
   }
 
-  Widget _createEmail(RegistrationBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.emailStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-                errorText: snapshot.error,
-                icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
-                hintText: 'nombre@correo.com',
-                labelText: 'Correo Electrónico'),
-            onChanged: bloc.emailChanged,
-          ),
-        );
-      },
-    );
-  }
-
   Widget _createButton(RegistrationBloc bloc) {
     return StreamBuilder(
       stream: bloc.canActivate,
@@ -128,13 +108,13 @@ class Registration extends StatelessWidget {
   }
 
   _signUpAndNavigate(BuildContext context, RegistrationBloc bloc) async {
-    /* showDialog(
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        }); */
+        });
 
     await bloc.registerUser();
 

@@ -11,7 +11,7 @@ class Repository {
   final userProvider = UserProvider();
 
   // api
-  Future<User> loginUser(String email, String password) =>
+  Future<Map> loginUser(String email, String password) =>
       authProvider.loginUser(email, password);
 
   Future<dynamic> registerUser(String name, String email) =>

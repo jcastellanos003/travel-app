@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' show Client, Response;
-import 'package:http_interceptor/http_interceptor.dart';
 
 class Request {
   String baseUrl = 'https://chargingspotsapi.herokuapp.com';
 
   Future<dynamic> requestBuilder(String method, String path,
-      Map<String, String> data, List<InterceptorContract> interceptors) async {
-    Client client = HttpClientWithInterceptor.build(interceptors: interceptors);
+      [Map<String, dynamic> data]) async {
+    Client client;
 
     Map<String, dynamic> methodMap = {
       "post": client.post,
@@ -20,7 +19,7 @@ class Request {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: jsonEncode(data));
+        body: jsonEncode(data ?? {}));
 
     // Base case
     if (response.statusCode == 200) {
