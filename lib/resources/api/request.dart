@@ -7,7 +7,7 @@ class Request {
 
   Future<dynamic> requestBuilder(String method, String path,
       [Map<String, dynamic> data]) async {
-    Client client;
+    Client client = new Client();
 
     Map<String, dynamic> methodMap = {
       "post": client.post,
