@@ -156,7 +156,7 @@ class Login extends StatelessWidget {
   _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {
     await bloc.loginUser();
 
-    if (bloc.userValue.email != null) {
+    if (bloc.userValue != null && bloc.userValue.email != null) {
       Navigator.pushReplacementNamed(context, 'home');
     }
   }
