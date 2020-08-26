@@ -38,7 +38,6 @@ class Request {
     //Network Errors
 
     //Server Errors
-
-    throw Exception('Error al crear usuario');
+    throw Exception(response.body);
   }
 }
