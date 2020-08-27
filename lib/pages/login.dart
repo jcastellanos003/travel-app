@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:travel_planner/blocs/login_bloc.dart';
+import 'package:travel_planner/notifiers/change_notifier.dart';
 import 'package:travel_planner/resources/provider.dart';
 import 'package:travel_planner/widgets/widgets.dart';
 
@@ -15,7 +17,53 @@ class Login extends StatelessWidget {
       _createForm(context, loginBloc)
     ]);
 
+    BuildContext dialogContext;
+
     return Scaffold(
+      key: _scaffoldKey,
+      body: Consumer<GeneralChangeNotifier>(
+        builder: (_, notifier, __) {
+          if (notifier.state == NotifierState.loading) {
+            WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  dialogContext = context;
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }));
+            return main;
+          } else {
+            if (notifier.failure != null) {
+              if (dialogContext != null) {
+                Navigator.pop(dialogContext, true);
+              }
+              WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => _showMessage(notifier.failure.toString()));
+            } else if (notifier.state == NotifierState.loaded) {
+              Navigator.pushReplacementNamed(context, 'home');
+            }
+            return main;
+          }
+
+          /*  if (notifier.state == NotifierState.initial) {
+            return main;
+          } else if (notifier.state == NotifierState.loading) {
+            return CircularProgressIndicator();
+          } else {
+            if (notifier.failure != null) {
+              WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => _showMessage(notifier.failure.toString()));
+              return Text('Fail');
+            } else {
+              return Text('done');
+            }
+          } */
+        },
+      ),
+    );
+
+    /*  Scaffold(
         key: _scaffoldKey,
         body: StreamBuilder(
           stream: loginBloc.errorStream,
@@ -27,7 +75,7 @@ class Login extends StatelessWidget {
             }
             return main;
           },
-        ));
+        )); */
   }
 
   Widget _createBG(BuildContext context) {
@@ -141,23 +189,14 @@ class Login extends StatelessWidget {
     ));
   }
 
-  _showLoading(
-    BuildContext context,
-  ) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        });
-  }
-
   _signUpAndNavigate(BuildContext context, LoginBloc bloc) async {
-    await bloc.loginUser();
+    Provider.of<GeneralChangeNotifier>(context, listen: false)
+        .login(bloc.emailState.value, bloc.passwordState.value);
+
+    /* await bloc.loginUser();
 
     if (bloc.userValue != null && bloc.userValue.email != null) {
       Navigator.pushReplacementNamed(context, 'home');
-    }
+    } */
   }
 }

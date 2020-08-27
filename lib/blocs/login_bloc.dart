@@ -2,13 +2,14 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:travel_planner/models/models.dart';
-import 'package:travel_planner/resources/repository.dart';
-import 'package:travel_planner/resources/resources.dart';
+/* import 'package:travel_planner/resources/repository.dart';
+import 'package:travel_planner/resources/resources.dart'; */
 import 'package:travel_planner/resources/state/state.dart';
 import 'package:travel_planner/utils/utils.dart';
+//import 'package:travel_planner/notifiers/change_notifier.dart';
 
 class LoginBloc with FieldValidators {
-  final _repository = Repository();
+  // final _repository = Repository();
   final emailState = StateProvider.getEmailStreamInstance();
   final passwordState = StateProvider.getPasswordStreamInstance();
 
@@ -30,8 +31,10 @@ class LoginBloc with FieldValidators {
   Stream<bool> get loadingStream => _loading$.stream;
   Stream<String> get errorStream => _error$.stream;
 
-  loginUser() async {
-    _loading$.sink.add(true);
+  /*  loginUser() async {
+    _repository.login(emailState.value, passwordState.value);
+
+    /*  _loading$.sink.add(true);
     try {
       Map response =
           await _repository.loginUser(emailState.value, passwordState.value);
@@ -52,8 +55,8 @@ class LoginBloc with FieldValidators {
     } catch (e) {
       print(e.message);
       _error$.sink.add(e.message);
-    }
-  }
+    } */
+  } */
 
   dispose() {
     _error$?.close();
