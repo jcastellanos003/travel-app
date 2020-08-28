@@ -23,7 +23,16 @@ class Login extends StatelessWidget {
       key: _scaffoldKey,
       body: Consumer<GeneralChangeNotifier>(
         builder: (_, notifier, __) {
-          if (notifier.state == NotifierState.loading) {
+          if (notifier.state == NotifierState.initial) {
+            return main;
+          } else if (notifier.state == NotifierState.loading) {
+            return CircularProgressIndicator();
+          } else {
+            return notifier.user.fold(
+                (failure) => Text(failure.toString()), (user) => Text('ok'));
+          }
+
+          /*  if (notifier.state == NotifierState.loading) {
             WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -34,7 +43,19 @@ class Login extends StatelessWidget {
                 }));
             return main;
           } else {
-            if (notifier.failure != null) {
+            return notifier.user.fold((failure) {
+              if (dialogContext != null) {
+                Navigator.pop(dialogContext, true);
+              }
+              WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => _showMessage(failure.toString()));
+              return main;
+            }, (user) {
+              Navigator.pushReplacementNamed(context, 'home');
+              return Container();
+            }); */
+
+          /* if (notifier.failure != null) {
               if (dialogContext != null) {
                 Navigator.pop(dialogContext, true);
               }
@@ -43,8 +64,8 @@ class Login extends StatelessWidget {
             } else if (notifier.state == NotifierState.loaded) {
               Navigator.pushReplacementNamed(context, 'home');
             }
-            return main;
-          }
+            return main; 
+          }*/
 
           /*  if (notifier.state == NotifierState.initial) {
             return main;

@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'request.dart';
+import 'package:travel_planner/models/user_model.dart';
 
 class AuthProvider {
-  Future<Map> loginUser(String email, String password) async {
+  Future<User> loginUser(String email, String password) async {
     Request request = new Request();
 
-    return await request.requestBuilder(
-        'post', '/auth/signIn', {email: email, password: password});
+    Map response = await request.requestBuilder(
+        'post', '/auth/signIn', {"email": email, "password": password});
 
-    //return response;
+    return User.fromJson(response);
   }
 }

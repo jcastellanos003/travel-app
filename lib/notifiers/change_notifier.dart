@@ -32,12 +32,26 @@ class GeneralChangeNotifier extends ChangeNotifier {
 
   void login(String email, String password) async {
     _setState(NotifierState.loading);
-    try {
+    /*   try {
       final user = await _repository.loginUser(email, password);
       _setUser(User.fromJson(user));
     } on Failure catch (f) {
       _setFailure(f);
-    }
+    } */
+
+    await Task(() => _repository.loginUser(email, password))
+        .attempt()
+        .map(
+          (either) => either.leftMap((obj) {
+            try {
+              return obj as Failure;
+            } catch (e) {
+              return obj as Failure;
+            }
+          }),
+        )
+        .run()
+        .then((value) => _setUser(value));
 
     _setState(NotifierState.loaded);
   }
