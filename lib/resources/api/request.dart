@@ -25,7 +25,7 @@ class Request {
     if (response.statusCode == 200) {
       Map data = json.decode(response.body);
       print(response);
-      if (data['status'] == true) {
+      if (data['key'] != null) {
         //Success notification
         print('success');
       } else {

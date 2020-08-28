@@ -23,16 +23,7 @@ class Login extends StatelessWidget {
       key: _scaffoldKey,
       body: Consumer<GeneralChangeNotifier>(
         builder: (_, notifier, __) {
-          if (notifier.state == NotifierState.initial) {
-            return main;
-          } else if (notifier.state == NotifierState.loading) {
-            return CircularProgressIndicator();
-          } else {
-            return notifier.user.fold(
-                (failure) => Text(failure.toString()), (user) => Text('ok'));
-          }
-
-          /*  if (notifier.state == NotifierState.loading) {
+          if (notifier.state == NotifierState.loading) {
             WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -41,62 +32,22 @@ class Login extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 }));
-            return main;
-          } else {
-            return notifier.user.fold((failure) {
+          } else if (notifier.user != null) {
+            notifier.user.fold((failure) {
               if (dialogContext != null) {
                 Navigator.pop(dialogContext, true);
               }
               WidgetsBinding.instance.addPostFrameCallback(
                   (_) => _showMessage(failure.toString()));
-              return main;
-            }, (user) {
-              Navigator.pushReplacementNamed(context, 'home');
-              return Container();
-            }); */
+            }, (user) async {
+              await Navigator.pushReplacementNamed(context, 'home');
+            });
+          }
 
-          /* if (notifier.failure != null) {
-              if (dialogContext != null) {
-                Navigator.pop(dialogContext, true);
-              }
-              WidgetsBinding.instance.addPostFrameCallback(
-                  (_) => _showMessage(notifier.failure.toString()));
-            } else if (notifier.state == NotifierState.loaded) {
-              Navigator.pushReplacementNamed(context, 'home');
-            }
-            return main; 
-          }*/
-
-          /*  if (notifier.state == NotifierState.initial) {
-            return main;
-          } else if (notifier.state == NotifierState.loading) {
-            return CircularProgressIndicator();
-          } else {
-            if (notifier.failure != null) {
-              WidgetsBinding.instance.addPostFrameCallback(
-                  (_) => _showMessage(notifier.failure.toString()));
-              return Text('Fail');
-            } else {
-              return Text('done');
-            }
-          } */
+          return main;
         },
       ),
     );
-
-    /*  Scaffold(
-        key: _scaffoldKey,
-        body: StreamBuilder(
-          stream: loginBloc.errorStream,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              WidgetsBinding.instance
-                  .addPostFrameCallback((_) => _showMessage(snapshot.data));
-              return main;
-            }
-            return main;
-          },
-        )); */
   }
 
   Widget _createBG(BuildContext context) {
@@ -165,25 +116,6 @@ class Login extends StatelessWidget {
       ),
     );
   }
-
-  /* Widget _createPassword(LoginBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.pwdStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: TextField(
-            obscureText: true,
-            decoration: InputDecoration(
-                errorText: snapshot.error,
-                icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
-                labelText: 'Contraseña'),
-            onChanged: bloc.passwordChanged,
-          ),
-        );
-      },
-    );
-  } */
 
   Widget _createLoginButton(LoginBloc bloc) {
     return StreamBuilder(
